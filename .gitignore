@@ -1,1 +1,3 @@
 #ARQUIVO .GITIGNORE
+.pyc
+.db

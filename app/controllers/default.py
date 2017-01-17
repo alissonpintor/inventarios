@@ -3,7 +3,7 @@ from app import app
 from app.models.tables import User
 from bottle import template, static_file, request, redirect
 
-# static routes
+# INICIO static routes ########################################################
 @app.get('/<filename:re:.*\.css>')
 def stylesheets(filename):
 	return static_file(filename, root='app/static/css')
@@ -19,15 +19,18 @@ def images(filename):
 @app.get('/<filename:re:.*\.(eot|ttf|woff|svg)>')
 def fonts(filename):
 	return static_file(filename, root='app/static/fonts')
+# FINAL static routes #########################################################
 
 @app.route('/')
 def login():
-	return template('login', sucesso=True)
+	return template('inventario', sucesso=True)
 
 @app.route('/cadastro')
 def cadastro():
 	return template('cadastro', existe_username=False)
 
+
+"""
 @app.route('/cadastro', method='POST')
 def acao_cadastro(db, session):
 	username = request.forms.get('username')
@@ -80,3 +83,4 @@ def usuarios(db, session):
 @app.error(404)
 def error404(error):
 	return template('pagina404')
+"""
