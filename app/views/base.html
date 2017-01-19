@@ -3,26 +3,35 @@
 <head>
 	<title>{{title or 'Sistema Login'}}</title>
 
+	<link rel="stylesheet" type="text/css" href="normalize.css">
 	<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="dataTables.bootstrap.min">
+	<link rel="stylesheet" type="text/css" href="dataTables.bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
 	<link rel="icon" href="icone.png">
-
-	<script type="text/javascript" charset="utf-8" src="login.js"></script>
 </head>
 
 <body>
 	<div class="container">
-		<div class="col-md-12">
-			{{!base}}
+		{{!base}}
+	</div>
+	<div class="button-filter rotatereverse">+</div>
+	<div class="box-filter" tabindex="0">
+		<div class="checkbox" id='hide-zero'>
+			<label>
+      	<input type="checkbox">Esconder Zerados
+    	</label>
 		</div>
 	</div>
 
 	<script src="jquery.js" type="text/javascript" charset="utf-8"></script>
 	<script src="jquery.dataTables.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="dataTables.bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="script.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		$(document).ready(function() {
-			$('#example').DataTable();
+			$('#example').DataTable({
+				autoFill: true,
+			});
 		});
 	</script>
 </body>

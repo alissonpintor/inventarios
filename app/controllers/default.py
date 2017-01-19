@@ -1,6 +1,6 @@
 import bcrypt
 from app import app
-from app.models.tables import User
+from app.models.tables import Produtos
 from bottle import template, static_file, request, redirect
 
 # INICIO static routes ########################################################
@@ -22,8 +22,9 @@ def fonts(filename):
 # FINAL static routes #########################################################
 
 @app.route('/')
-def login():
-	return template('inventario', sucesso=True)
+def index(db):
+	produtos = db.query(Produtos).all()
+	return template('inventario', produtos=produtos)
 
 @app.route('/cadastro')
 def cadastro():

@@ -1,27 +1,12 @@
 from sqlalchemy import Column, String, Integer, Float
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+#from sqlalchemy import create_engine
+#from sqlalchemy.ext.declarative import declarative_base
+#from sqlalchemy.orm import sessionmaker
 
-Base = declarative_base()
+#Base = declarative_base()
 #engine = create_engine('sqlite:///database.db', echo=True)
-engine = create_engine("db2+ibm_db://relatorio:relatorio@192.168.104.3:50000/STOKY")
-#from app import Base
-
-class User(Base):
-	__tablename__ = 'users'
-	id = Column(Integer, primary_key=True)
-	username = Column(String(50), unique=True, nullable=False)
-	hashed = Column(String(50), nullable=False)
-	salt = Column(String(50), nullable=False)
-
-	def __init__(self, username, hashed, salt):
-		self.username = username
-		self.hashed = hashed
-		self.salt = salt
-
-	def __repr__(self):
-		return '<User: %s> <Passwd: %s>' % (self.username, self.hashed)
+#engine = create_engine("db2+ibm_db://relatorio:relatorio@192.168.104.3:50000/STOKY")
+from app import Base
 
 class Produtos(Base):
 	__tablename__ = 'produtos'
@@ -38,6 +23,8 @@ class Produtos(Base):
 	def __repr__(self):
 		return 'ID: %d - DESCRICAO: %s - MARCA: %s - SALDO: %f' % (self.id, self.descricao, self.fabricante, self.saldo)
 
+
+'''
 class ProdutosCiss(Base):
 	__tablename__ = 'dba.produtos_view'
 	idsubproduto = Column(Integer, primary_key=True)
@@ -54,3 +41,4 @@ class ProdutosCiss(Base):
 
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
+'''
