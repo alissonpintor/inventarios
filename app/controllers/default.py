@@ -12,19 +12,27 @@ def stylesheets(filename):
 def javascripts(filename):
 	return static_file(filename, root='app/static/js')
 
+@app.get('/<filename:re:.*\.json>')
+def javascripts(filename):
+	return static_file(filename, root='app/static/json')
+
 @app.get('/<filename:re:.*\.(jpg|png|gif|ico)>')
 def images(filename):
 	return static_file(filename, root='app/static/img')
 
-@app.get('/<filename:re:.*\.(eot|ttf|woff|svg)>')
+@app.get('/<filename:re:.*\.(eot|ttf|woff|woff2|svg)>')
 def fonts(filename):
-	return static_file(filename, root='app/static/fonts')
+	return static_file(filename, root='app/static')
 # FINAL static routes #########################################################
 
 @app.route('/')
 def index(db):
 	produtos = db.query(Produtos).all()
 	return template('inventario', produtos=produtos)
+
+@app.route('/export')
+def cadastro():
+	return template('export')
 
 @app.route('/cadastro')
 def cadastro():

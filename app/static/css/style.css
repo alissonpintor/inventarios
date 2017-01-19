@@ -57,6 +57,10 @@ div.form{
   display: none;
 }
 
+.fixed-table-body{
+  height: auto;
+}
+
 .rotate{
   /* for firefox */
   -moz-animation-name:rotatebox;

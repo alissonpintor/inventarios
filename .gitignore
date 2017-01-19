@@ -1,4 +1,9 @@
 #ARQUIVO .GITIGNORE
+#extensoes
 *.pyc
 *.db
 *.zip
+*.json
+
+#pastas
+json/
