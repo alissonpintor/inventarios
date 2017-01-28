@@ -61,6 +61,18 @@ div.form{
   height: auto;
 }
 
+#messages{
+  position: fixed;
+  top:10px;
+  right: 10px;
+  width: 400px;
+  height: 90%;
+  border: 1px solid #057848;
+  border-radius: 3px;
+  background-color: #aee0cb;
+  display: none;
+}
+
 .rotate{
   /* for firefox */
   -moz-animation-name:rotatebox;

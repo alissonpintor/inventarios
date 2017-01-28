@@ -1,6 +1,7 @@
 import bcrypt
 from app import app
 from app.models.tables import Produtos
+from app.models.sql import ProdutosCiss
 from bottle import template, static_file, request, redirect
 
 # INICIO static routes ########################################################
@@ -26,70 +27,35 @@ def fonts(filename):
 # FINAL static routes #########################################################
 
 @app.route('/')
-def index(db):
-	produtos = db.query(Produtos).all()
+def index(db2):
+	produtos = db2.query(ProdutosCiss).all()
 	return template('inventario', produtos=produtos)
 
-@app.route('/export')
-def cadastro():
-	return template('export')
-
-@app.route('/cadastro')
-def cadastro():
-	return template('cadastro', existe_username=False)
 
 
-"""
-@app.route('/cadastro', method='POST')
-def acao_cadastro(db, session):
-	username = request.forms.get('username')
-	try:
-		db.query(User).filter(User.username == username).one()
-		existe_username = True
-	except:
-		existe_username = False
-	if not existe_username:
-		password = request.forms.get('password')
-		password_bytes = str.encode(password)
-		salt_bytes = bcrypt.gensalt()
-		salt = salt_bytes.decode()
-		hashed_bytes = bcrypt.hashpw(password_bytes, salt_bytes)
-		hashed = hashed_bytes.decode()
-		new_user = User(username, hashed, salt)
-		db.add(new_user)
-		session['name'] = username
-		return redirect('/usuarios')
-	return template('cadastro', existe_username=True)
+'''
+@app.route('/buscar')
+def buscar():
+	return template('buscar', produtos=False)
 
-@app.route('/', method='POST')
-def acao_login(db, session):
-	username = request.forms.get('username')
-	try:
-		user = db.query(User).filter(User.username == username).one()
-		existe_username = True
-	except:
-		existe_username = False
-	if existe_username:
-		password = request.forms.get('password')
-		password_bytes = str.encode(password)
-		salt_bytes = str.encode(user.salt)
-		hashed_bytes = bcrypt.hashpw(password_bytes, salt_bytes)
-		hashed = hashed_bytes.decode()
-		if user.hashed == hashed:
-			session['name'] = username
-			return redirect('/usuarios')
-	return template('login', sucesso=False)
+@app.route('/produtos', method="POST")
+def acao_buscar(db2):
+	from bottle import response
+	from json import dumps
 
-@app.route('/usuarios')
-def usuarios(db, session):
-	if session.get('name'):
-		acesso = True
-	else:
-		acesso = False
-	usuarios = db.query(User).all()
-	return template('lista_usuarios', usuarios=usuarios, acesso=acesso)
+	busca = request.forms.get('descricao')
 
-@app.error(404)
-def error404(error):
-	return template('pagina404')
-"""
+	produtos = db2.query(ProdutosCiss).filter(ProdutosCiss.descricao.like('%'+busca+'%')).all()
+	dict = {}
+	count = 0
+	for p in produtos:
+		prod = {}
+		prod['id'] = p.id
+		prod['descricao'] = p.descricao
+		prod['fabricante'] = p.fabricante
+		prod['saldo'] = 0
+		dict[str(count)] = prod
+		count += 1
+	response.content_type = 'application/json'
+	return dumps(dict)
+'''
