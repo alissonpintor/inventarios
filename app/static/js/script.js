@@ -1,6 +1,11 @@
-$(function() {
+$(function(){
     $('.datepicker').datepicker({
       dateFormat: "dd/mm/yy"
+    });
+
+    $('.nav-link').click(function(){
+      $('.active').removeClass('active');
+      $(this).addClass('active');
     });
 
     var $table = $('#table');
@@ -75,33 +80,84 @@ $(function() {
         }
     });
 
+    $( "#messages" ).delay( 3000 ).toggle( 700 );
+
+    $('.bs-example-modal-lg').on('hide.bs.modal', function(){
+      $('#div-input-id').remove();
+      $('#modal-descricao').val('');
+    });
+
+    function addIdOnModal(){
+      $('.update').on('click', function(e){
+        e.preventDefault();
+        $('.modal-title').html('Alterar Cadastrado');
+        $('.modal-body').prepend(
+          '<div class="row" id="div-input-id">'+
+          '<div class="col-xs-2">'+
+          '<div class="form-group">'+
+              '<label for="id">Id</label>'+
+              '<input name="id" id="modal-id" type="text" class="form-control" readonly>'+
+          '</div>'+
+          '</div>'+
+          '</div>'
+        );
+        var id = $(this).closest('tr').find('td:eq(1)').html();
+        var descricao = $(this).closest('tr').find('td:eq(2)').html();
+        $('#modal-id').val(id);
+        $('#modal-descricao').val(descricao);
+      });
+    }
+
+    addIdOnModal()
+
     //Preparar um formulario para envio por AJAX (serialize)
     $(function(){
-     $('#my-form').bind('submit', function(e){
+     $('#form-modal').bind('submit', function(e){
        e.preventDefault();
-
        var txt = $(this).serialize();
-       console.log(txt);
 
        $.ajax({
          type:'POST',
-         url:'produtos',
+         method: 'POST',
+         url:'/cadastrar_marca',
          data: txt,
+         dataType: 'json',
          success: function(resultado){
            $("#mytable tbody").html('')
            $.each(resultado, function(key, ob){
              $("#mytable tbody").append(
               '<tr> \n'+
+               '<td>'+
+                   '<a class="btn btn-default update" href="" data-toggle="modal" data-target=".bs-example-modal-lg">'+
+                     '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>'+
+                   '</a>'+
+                   '<a class="btn btn-default detele" href="/marcas/delete/'+ob.id+'">'+
+                     '<span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>'+
+                   '</a>'+
+              '</td>'+
               '<td>'+ ob.id +'</td> \n'+
               '<td>'+ ob.descricao +'</td> \n'+
-              '<td>'+ ob.fabricante +'</td> \n'+
-              '<td>'+ 0 +'</td> \n </tr>');
-             console.log(ob.id);
-             console.log(ob.descricao);
+              '<td>'+ ob.create_at +'</td> \n'+
+              '<td>'+ ob.update_at +'</td> \n </tr>');
            });
+           addIdOnModal()
+           $('.modal-body').prepend(
+             '<div id="messages-modal" class="alert alert-success" role="alert">'+
+                 '<strong>Sucesso! </strong> Registro cadastrado com sucesso.'+
+             '</div>'
+           );
+           $( "#messages-modal" ).delay( 3000 ).toggle( 700 ).delay( 3000 ).queue(function() { $(this).remove(); });
+           if(!$('#modal-id')){
+             $('#modal-descricao').val('');
+           }
          },
-         error: function(){
-           alert('Ocorreu um erro!');
+         error: function(error){
+           $('.modal-body').prepend(
+             '<div id="messages-modal" class="alert alert-warning" role="alert">'+
+                 '<strong>Ops! </strong> Você deve informar o nome da marca.'+
+             '</div>'
+           );
+           $( "#messages-modal" ).delay( 3000 ).toggle( 700 ).delay( 3000 ).queue(function() { $(this).remove(); });
          }
        })
      });

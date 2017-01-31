@@ -1,3 +1,23 @@
+/* ###### CSS HI-TECH ###### */
+body{
+  background-color: #fff;
+}
+
+.hide{
+  display: none;
+}
+
+#submodal {
+	z-index: 1080 !important;
+}
+
+#messages {
+  margin-top: 10px;
+}
+
+
+/* ###### CSS INICIAL DAS TABELAS ###### */
+/*
 .mg-top{
   margin-top: 20px
 }
@@ -72,7 +92,12 @@ div.form{
   background-color: #aee0cb;
   display: none;
 }
+*/
 
+
+
+
+/* ######## ANIMACOES FEITAS USANDO CSS ######## */
 .rotate{
   /* for firefox */
   -moz-animation-name:rotatebox;
